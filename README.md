@@ -17,7 +17,10 @@ so there are few features in the project
 every time you press you keyboard,this app will play the sound of the keystrokes of cherry-G80-3000
 
 The volume cannot be adjusted
+
 The pitch cannot be adjusted
+
 Accompanied by the terminal
-You can just use cherry-G80-3000 sound 
+
+You can only use cherry-G80-3000 sound 
 
