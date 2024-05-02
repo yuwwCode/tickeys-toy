@@ -4,8 +4,11 @@ Sources of inspiration：Tickeys
 but not use any code from Tickeys project
 
 you can copy all the files in build./ dir
+
 makesure .exe file and resource dir in the same path
+
 and run .exe file on win11 sys
+
 or build it by yourselves cargo 
 
 the project just used to learn rust
