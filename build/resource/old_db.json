@@ -1,0 +1,31 @@
+[
+  {
+    "vk_code": 1,
+    "value": "鼠标左键"
+  },
+  {
+    "vk_code": 2,
+    "value": "鼠标右键"
+  },
+  {
+    "vk_code": 3,
+    "value": "控制中断处理"
+  },
+  {
+    "vk_code": 4,
+    "value": "鼠标中键"
+  },
+  {
+    "vk_code": 5,
+    "value": "鼠标侧键"
+  },
+  {
+    "vk_code": 6,
+    "value": "鼠标前进键"
+  },
+  {
+    "vk_code": 8,
+    "value": "BACKSPACE"
+  },
+  {}
+]

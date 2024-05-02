@@ -1,0 +1,9 @@
+{
+    "default0": "./resource/cherry-G80-3000/default0.wav",
+    "default1": "./resource/cherry-G80-3000/default1.wav",
+    "default2": "./resource/cherry-G80-3000/default2.wav",
+    "default3": "./resource/cherry-G80-3000/default3.wav",
+    "default4": "./resource/cherry-G80-3000/default4.wav",
+    "Enter": "./resource/cherry-G80-3000/ent.wav",
+    "Backspace": "./resource/cherry-G80-3000/bks.wav"
+}
