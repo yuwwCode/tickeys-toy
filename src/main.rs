@@ -1,38 +1,60 @@
-use std::{thread::sleep, time::Duration};
+mod types;
+mod utils;
+use anyhow::Result;
+use kira::{
+    sound::static_sound::StaticSoundData, AudioManager, AudioManagerSettings, DefaultBackend,
+};
+use redis::{self, Commands};
+use std::{collections::HashMap, sync::Arc};
 
-use my_play::Player;
-use my_windows_hook::MyWindowsHook;
+use tokio::sync::Mutex;
+use types::key_event::KeyEvent;
+#[tokio::main]
+async fn main() {
+    println!("Hello world");
+    let client = redis::Client::open("redis://127.0.0.1/").unwrap();
+    let mut con = client.get_connection().unwrap();
+    con.set::<&str, &str, ()>("rs_to_py_flag", "ready").unwrap();
 
-mod my_play;
-mod my_windows_hook;
-mod vk;
+    let _ = con
+        .publish::<&str, &str, ()>("py_to_rs_channel", "")
+        .unwrap();
+    // 订阅频道
+    let mut pubsub = con.as_pubsub();
+    pubsub.subscribe("py_to_rs_channel").unwrap();
 
-fn main() {
-    let hook = MyWindowsHook::new().unwrap();
-
-    let mut player = Player::new();
-    match player.load_dir_by_json() {
-        Ok(_) => (),
-        Err(e) => println!("{:?}", e),
-    };
-    let end_flag = vec![69, 78, 68, 84, 73, 67, 75];
-    let mut store = Vec::new();
-    let sleep_time = Duration::from_micros(1);
-    loop {
-        if let Ok(o) = hook.try_peek() {
-            if let Some(s) = o {
-                // println!("{:?}", s);
-                player.play(&s);
-                store.push(s.vk_code);
+    let flag = true;
+    use utils::init::{init_audio, init_kira};
+    // 创建多个异步任务
+    let (manager_result, audios_result) = tokio::join!(init_kira(), init_audio());
+    // 处理返回值
+    let manager = manager_result.unwrap();
+    let (audios_down, audio_up) = audios_result.unwrap();
+    //创建存在的按钮事件Set
+    let mut hoding_key_set = types::hoding_key::HodingKeySet::new();
+    while flag {
+        if let Ok(msg) = pubsub.get_message() {
+            let msg: String = msg.get_payload().unwrap();
+            let key_event: KeyEvent = KeyEvent::from_str(&msg).unwrap();
+            let res = hoding_key_set.add_key(&key_event);
+            if !res {
+                continue;
             }
-            sleep(sleep_time);
-        };
-        if store == end_flag {
-            break;
-        } else if store.len() >= 7 {
-            store.remove(0);
+            let data = utils::key_to_audio::key_to_audio(&key_event, &audios_down, &audio_up).await;
+            let manager_clone = manager.clone();
+            tokio::spawn(async move {
+                play_data(data, manager_clone).await;
+            });
         }
     }
-    hook.end();
-    println!("ended");
+}
+async fn play_data(data: StaticSoundData, manager: Arc<Mutex<AudioManager>>) {
+    let res = manager.lock().await.play(data);
+    match res {
+        Ok(_) => {}
+        Err(e) => {
+            println!("{:?}", e);
+            panic!("error in play data");
+        }
+    }
 }

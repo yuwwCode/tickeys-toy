@@ -1,26 +1,46 @@
-# tickeys-toy
-a rust learn project.
-Sources of inspiration：Tickeys 
-but not use any code from Tickeys project
+# 基于rust tokio库实现的按键音频模拟软件。
+# 适用于linux fedora41系统
 
-you can copy all the files in build./ dir
+## 运行需求:
+```
+redis-server
+python3
+```
 
-makesure .exe file and resource dir in the same path
+## 编译需求:
+```
+rustc
+cargo
+```
 
-and run .exe file on win11 sys
+### python：  
+采用python的keyboard库实现对全局键盘事件的监听  
+采用redis的发布订阅功能实现按键事件向rust应用的传输  
+使用json格式传输按键事件  
 
-or build it by yourselves cargo 
+### rust：  
+使用serde库实现对json数据的反序列化 
+使用redis库实现对redis的操作 
+使用tokio库的异步功能实现按键音的同步播放 
 
-the project just used to learn rust
-so there are few features in the project
+## 运行：  
+### 先运行
+```
+redis-server
+```
+### 再运行
+```
+###python3 hello.py
+```
+最后运行
+```
+cargo run --release
+```
 
-every time you press you keyboard,this app will play the sound of the keystrokes of cherry-G80-3000
-
-The volume cannot be adjusted
-
-The pitch cannot be adjusted
-
-Accompanied by the terminal
-
-You can only use cherry-G80-3000 sound 
-
+# Todo:   
+1.增加按键音的选择 done  
+2.增加按键音的随机播放 done  
+3.增加按键音的音量控制 todo  
+3.添加gui控制功能   todo  
+4.编译打包,发布  todo  
+5.自定义按键音  done
