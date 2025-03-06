@@ -24,16 +24,12 @@ cargo
 使用tokio库的异步功能实现按键音的同步播放 
 
 ## 运行：  
-### 先运行
+### 依次运行
 ```
 redis-server
-```
-### 再运行
-```
-###python3 hello.py
-```
-最后运行
-```
+
+python3 hello.py
+
 cargo run --release
 ```
 
