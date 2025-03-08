@@ -9,11 +9,21 @@ use tokio::sync::Mutex;
 use types::key_event::KeyEvent;
 
 use crate::types;
+///
+/// 初始化kira，并返回一个Arc<Mutex<AudioManager>>
+/// 一个可以在多个线程中共享的音频管理器
 pub async fn init_kira() -> Result<Arc<Mutex<AudioManager>>> {
     let manager = AudioManager::<DefaultBackend>::new(AudioManagerSettings::default())?;
     let manager = Arc::new(Mutex::new(manager));
     Ok(manager)
 }
+///inialaize the audio,by reading audio files from the default 'assets/sounds' folder.  
+///  Returns a tuple where the first element is a mapping of audio data corresponding to key presses,  
+/// and the second element is a mapping of audio data corresponding to key releases.  
+/// Each audio data mapping has a key of the button name and a value of a `Vec` of audio data.  
+///初始化audio，从默认的assets/sounds文件夹中读取音频文件  
+/// 返回一个元组，第一个元素：按下按键时对应的音频数据映射，第二个元素：释放按键时对应的音频数据映射  
+/// 每个音频数据映射的键为按键名称，值为音频数据列表
 pub async fn init_audio() -> Result<(
     HashMap<String, Vec<StaticSoundData>>,
     HashMap<String, Vec<StaticSoundData>>,

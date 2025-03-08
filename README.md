@@ -19,9 +19,9 @@ cargo
 使用json格式传输按键事件  
 
 ### rust：  
-使用serde库实现对json数据的反序列化 
-使用redis库实现对redis的操作 
-使用tokio库的异步功能实现按键音的同步播放 
+使用serde库实现对json数据的反序列化  
+使用redis库实现对redis的操作  
+使用tokio库的异步功能实现按键音的同步播放  
 
 ## 运行：  
 ### 依次运行
